@@ -4,6 +4,7 @@ import com.anderson.ordermanager.controller.dto.ItemDto;
 import com.anderson.ordermanager.entity.Item;
 import com.anderson.ordermanager.repository.ItemRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,7 +40,7 @@ public class ItemService {
         itemRepository.deleteById(id);
     }
 
-    public List<Item> findAll() {
-        return itemRepository.findAll();
+    public List<Item> findAll(Sort sort) {
+        return itemRepository.findAll(sort);
     }
 }

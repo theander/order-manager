@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.OK;
+
 @RestController
 @RequestMapping("/api")
 public class OrderController {
@@ -19,26 +21,25 @@ public class OrderController {
     }
 
     @PostMapping("/order")
-    public ResponseEntity<OrderDto> createOrder(@RequestBody OrderDto orderDto) {
-        orderService.create(orderDto);
-        return new ResponseEntity<>(orderDto, HttpStatus.CREATED);
+    public ResponseEntity<Orders> createOrder(@RequestBody OrderDto orderDto) {
+        return new ResponseEntity<>(orderService.create(orderDto), HttpStatus.CREATED);
     }
 
     @GetMapping("order/{id}")
     public ResponseEntity<Orders> findorderById(@PathVariable(value = "id") String id) {
-        return new ResponseEntity<>(orderService.findById(Long.parseLong(id)), HttpStatus.OK);
+        return new ResponseEntity<>(orderService.findById(Long.parseLong(id)), OK);
     }
 
     @GetMapping("order")
     public ResponseEntity<List<Orders>> findAll() {
         List<Orders> orderList = orderService.findAll();
-        return new ResponseEntity<>(orderList, HttpStatus.OK);
+        return new ResponseEntity<>(orderList, OK);
     }
 
     @PutMapping("order/{id}")
-    public ResponseEntity<Object> updateorder(@PathVariable(value = "id") Long id, @RequestBody OrderDto orderDto) {
-        orderService.update(id, orderDto);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Orders> updateOrder(@PathVariable(value = "id") Long id, @RequestBody OrderDto orderDto) {
+        Orders o = orderService.update(id, orderDto);
+        return new ResponseEntity<>(o, OK);
     }
 
     @DeleteMapping("order/{id}")

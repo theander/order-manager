@@ -1,6 +1,7 @@
 package com.anderson.ordermanager.service;
 
 import com.anderson.ordermanager.controller.dto.StockMovementDto;
+import com.anderson.ordermanager.entity.Item;
 import com.anderson.ordermanager.entity.StockMovement;
 import com.anderson.ordermanager.repository.StockMovementRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -19,6 +20,9 @@ public class StockMovementService {
 
     public void create(StockMovementDto stockMovementDto) {
         StockMovement stockMovement = new StockMovement();
+        Item item = new Item();
+        item.setId(stockMovementDto.getItem_id());
+        stockMovement.setItem(item);
         stockMovement.setQuantity(stockMovementDto.getQuantity());
         stockMovementRepository.save(stockMovement);
 
