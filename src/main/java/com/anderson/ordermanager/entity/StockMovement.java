@@ -3,7 +3,7 @@ package com.anderson.ordermanager.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.OffsetDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "stock_movement")
@@ -12,15 +12,20 @@ public class StockMovement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "movement_id")
-    private int id;
+    private Long id;
 
     @Column(name = "creation_date")
-    private OffsetDateTime creationDate;
+    private Date creationDate;
 
-    @ManyToMany
+    @ManyToOne
     @JoinColumn(name = "item_id")
     private Item item;
 
     @Column(name = "quantity")
-    private int quantity;
+    private Long quantity;
+
+    @PrePersist
+    private void setCreationDate(){
+        this.creationDate = new Date();
+    }
 }
