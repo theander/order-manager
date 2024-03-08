@@ -23,10 +23,6 @@ public class ItemService {
         itemRepository.save(item);
     }
 
-    public List<Item> readAll() {
-        return itemRepository.findAll();
-    }
-
     public Item findById(Long id){
         Optional<Item> byId = itemRepository.findById(id);
         if(byId.isEmpty()){
@@ -44,7 +40,6 @@ public class ItemService {
     }
 
     public List<Item> findAll() {
-        List<Item> itemList = itemRepository.findAll();
-        return itemList;
+        return itemRepository.findAll();
     }
 }

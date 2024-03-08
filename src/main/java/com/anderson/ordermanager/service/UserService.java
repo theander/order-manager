@@ -24,10 +24,6 @@ public class UserService {
         usersRepository.save(users);
     }
 
-    public List<Users> readAll() {
-        return usersRepository.findAll();
-    }
-
     public Users findById(Long id) {
         Optional<Users> byId = usersRepository.findById(id);
         if (byId.isEmpty()) {
@@ -49,7 +45,7 @@ public class UserService {
     }
 
     public List<Users> findAll() {
-        List<Users> userList = usersRepository.findAll();
-        return userList;
+        return usersRepository.findAll();
+
     }
 }

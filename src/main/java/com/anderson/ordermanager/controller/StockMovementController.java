@@ -31,7 +31,7 @@ public class StockMovementController {
     @GetMapping("stock-movement")
     public ResponseEntity<List<StockMovement>> findAll() {
         List<StockMovement> stockMovementList = stockMovementService.findAll();
-        return new ResponseEntity<List<StockMovement>>(stockMovementList, HttpStatus.OK);
+        return new ResponseEntity<>(stockMovementList, HttpStatus.OK);
     }
 
     @PutMapping("stock-movement/{id}")

@@ -31,7 +31,7 @@ public class ItemController {
     @GetMapping("item")
     public ResponseEntity<List<Item>> findAll() {
         List<Item> itemList = itemService.findAll();
-        return new ResponseEntity<List<Item>>(itemList, HttpStatus.OK);
+        return new ResponseEntity<>(itemList, HttpStatus.OK);
     }
 
     @PutMapping("item/{id}")

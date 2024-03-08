@@ -1,14 +1,11 @@
 package com.anderson.ordermanager.service;
 
-import com.anderson.ordermanager.controller.dto.ItemDto;
 import com.anderson.ordermanager.controller.dto.StockMovementDto;
-import com.anderson.ordermanager.entity.Item;
 import com.anderson.ordermanager.entity.StockMovement;
 import com.anderson.ordermanager.repository.StockMovementRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +19,7 @@ public class StockMovementService {
 
     public void create(StockMovementDto stockMovementDto) {
         StockMovement stockMovement = new StockMovement();
-        stockMovement.setQuantity(stockMovement.getQuantity());
+        stockMovement.setQuantity(stockMovementDto.getQuantity());
         stockMovementRepository.save(stockMovement);
 
     }
@@ -44,7 +41,6 @@ public class StockMovementService {
     }
 
     public List<StockMovement> findAll() {
-        List<StockMovement> stockMovementList = stockMovementRepository.findAll();
-        return stockMovementList;
+        return stockMovementRepository.findAll();
     }
 }

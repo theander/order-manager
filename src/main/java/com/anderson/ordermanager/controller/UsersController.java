@@ -32,7 +32,7 @@ public class UsersController {
     @GetMapping("user")
     public ResponseEntity<List<Users>> findAll() {
         List<Users> userList = userService.findAll();
-        return new ResponseEntity<List<Users>>(userList, HttpStatus.OK);
+        return new ResponseEntity<>(userList, HttpStatus.OK);
     }
 
     @PutMapping("user/{id}")

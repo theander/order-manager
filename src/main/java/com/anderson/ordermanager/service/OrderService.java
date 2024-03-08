@@ -23,10 +23,6 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    public List<Orders> readAll() {
-        return orderRepository.findAll();
-    }
-
     public Orders findById(Long id){
         Optional<Orders> byId = orderRepository.findById(id);
         if(byId.isEmpty()){
