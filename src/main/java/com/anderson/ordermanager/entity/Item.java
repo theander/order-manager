@@ -6,9 +6,10 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
+
+@Data
 @Entity
 @Table(name = "item")
-@Data
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,5 +17,8 @@ public class Item {
     private Long id;
     @Column(name = "name")
     private String name;
-
+    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
+    private List<StockMovement> stockMovements = new ArrayList<>();
+//    @OneToMany(mappedBy = "item", fetch = FetchType.LAZY)
+//    private List<Order> order = new ArrayList<>();
 }
