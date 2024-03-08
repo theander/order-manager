@@ -1,16 +1,15 @@
 spring:
   datasource:
-    url: ${DATABASE_URL:jdbc:postgresql://localhost:5440/hm?currentSchema=users}
-    username: ${DATABASE_USER:my_user}
-    password: ${DATABASE_PASSWORD:my_password}
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/om?currentSchema=order-manager}
+    username: ${DATABASE_USER:usr}
+    password: ${DATABASE_PASSWORD:pass}
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
-      ddl-auto: ${HIBERNATE_DDL:create}
+      ddl-auto: ${HIBERNATE_DDL:update}
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     show-sql: true
 
