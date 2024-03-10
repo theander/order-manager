@@ -4,7 +4,6 @@ spring:
     username: ${DATABASE_USER:usr}
     password: ${DATABASE_PASSWORD:pass}
     driver-class-name: org.postgresql.Driver
-
   jpa:
     hibernate:
       ddl-auto: ${HIBERNATE_DDL:update}
@@ -12,6 +11,18 @@ spring:
       hibernate:
         format_sql: true
     show-sql: true
+  mail:
+    host: sandbox.smtp.mailtrap.io
+    port: 25
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 
 server:
   port: 8080

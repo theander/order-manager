@@ -1,9 +1,11 @@
 package com.anderson.ordermanager.service;
 
+import com.anderson.ordermanager.dto.EmailDto;
 import com.anderson.ordermanager.dto.OrderDto;
 import com.anderson.ordermanager.dto.StockMovementDto;
 import com.anderson.ordermanager.entity.Orders;
 import com.anderson.ordermanager.entity.StockMovement;
+import com.anderson.ordermanager.entity.Users;
 import com.anderson.ordermanager.enums.StatusEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,13 +17,18 @@ import java.util.List;
 @Service
 public class BusinessService {
     private static final Logger logger = LoggerFactory.getLogger(BusinessService.class);
+    private static final String EMAIL_FROM = "noreply@ordermanager.com";
 
     private final StockMovementService stockMovementService;
     private final OrderService orderService;
+    private final EmailService emailService;
+    private final UserService userService;
 
-    public BusinessService(StockMovementService stockMovementService, OrderService orderService) {
+    public BusinessService(StockMovementService stockMovementService, OrderService orderService, EmailService emailService, UserService userService) {
         this.stockMovementService = stockMovementService;
         this.orderService = orderService;
+        this.emailService = emailService;
+        this.userService = userService;
     }
 
     public void satisfyTransaction() {
@@ -83,7 +90,14 @@ public class BusinessService {
         orderDto.setQuantity(order.getQuantity());
         orderDto.setItemId(orderDto.getItemId());
         orderDto.setUserId(order.getUser().getId());
-        orderService.update(order.getId(), orderDto);
+        Orders updateOrder = orderService.update(order.getId(), orderDto);
+        Users userById = userService.findById(updateOrder.getUser().getId());
+        emailService.sendEmail(EmailDto.builder()
+                        .from(EMAIL_FROM)
+                .to(userById.getEmail())
+                .subject("Order Manager - Completed")
+                .body("Order "+ updateOrder+ "was completed.")
+                .build());
         logger.info("Order id: " + order.getId() +" "+ orderDto + " was completed !!!");
     }
 
