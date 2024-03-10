@@ -39,14 +39,6 @@ public class ItemController {
         return new ResponseEntity<>(itemList, HttpStatus.OK);
     }
 
-    private Sort sorter(SortEnum sort) {
-        if (sort.name() == null || sort.name().equals(SortEnum.ASC.name())) {
-            return Sort.by(Sort.Direction.ASC, "name");
-        } else {
-            return Sort.by(Sort.Direction.DESC, "name");
-        }
-    }
-
     @PutMapping("item/{id}")
     public ResponseEntity<Object> updateItem(@PathVariable(value = "id") Long id, @RequestBody ItemDto itemDto) {
         itemService.update(id, itemDto);
@@ -58,4 +50,13 @@ public class ItemController {
         itemService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    private Sort sorter(SortEnum sort) {
+        if (sort.name() == null || sort.name().equals(SortEnum.ASC.name())) {
+            return Sort.by(Sort.Direction.ASC, "name");
+        } else {
+            return Sort.by(Sort.Direction.DESC, "name");
+        }
+    }
+
 }

@@ -19,13 +19,13 @@ public class UsersController {
     }
 
     @PostMapping("user")
-    public ResponseEntity<UserDto> createuser(@RequestBody UserDto userDto) {
-        userService.create(userDto);
-        return new ResponseEntity<>(userDto, HttpStatus.CREATED);
+    public ResponseEntity<Users> createUser(@RequestBody UserDto userDto) {
+        Users users = userService.create(userDto);
+        return new ResponseEntity<>(users, HttpStatus.CREATED);
     }
 
     @GetMapping("user/{id}")
-    public ResponseEntity<Users> finduserById(@PathVariable(value = "id") String id) {
+    public ResponseEntity<Users> findUserById(@PathVariable(value = "id") String id) {
         return new ResponseEntity<>(userService.findById(Long.parseLong(id)), HttpStatus.OK);
     }
 
@@ -36,13 +36,13 @@ public class UsersController {
     }
 
     @PutMapping("user/{id}")
-    public ResponseEntity<Object> updateuser(@PathVariable(value = "id") Long id, @RequestBody UserDto userDto) {
+    public ResponseEntity<Object> updateUser(@PathVariable(value = "id") Long id, @RequestBody UserDto userDto) {
         userService.update(id, userDto);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("user/{id}")
-    public ResponseEntity<Object> deleteuser(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<Object> deleteUser(@PathVariable(value = "id") Long id) {
         userService.delete(id);
         return ResponseEntity.noContent().build();
     }

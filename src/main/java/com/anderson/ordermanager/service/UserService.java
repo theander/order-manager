@@ -2,8 +2,11 @@ package com.anderson.ordermanager.service;
 
 import com.anderson.ordermanager.dto.UserDto;
 import com.anderson.ordermanager.entity.Users;
+import com.anderson.ordermanager.exception.custom.DeleteViolationException;
+import com.anderson.ordermanager.exception.custom.EntityNotFoundException;
+import com.anderson.ordermanager.exception.custom.UniqueConstraintViolationException;
 import com.anderson.ordermanager.repository.UsersRepository;
-import jakarta.persistence.EntityNotFoundException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,17 +20,21 @@ public class UserService {
         this.usersRepository = usersRepository;
     }
 
-    public void create(UserDto usersDto) {
+    public Users create(UserDto usersDto) {
         Users users = new Users();
         users.setName(usersDto.getName());
         users.setEmail(usersDto.getEmail());
-        usersRepository.save(users);
+        try {
+            return usersRepository.save(users);
+        } catch (DataIntegrityViolationException e) {
+            throw new UniqueConstraintViolationException("Conflict!!!. User Already exists.");
+        }
     }
 
     public Users findById(Long id) {
         Optional<Users> byId = usersRepository.findById(id);
         if (byId.isEmpty()) {
-            throw new EntityNotFoundException("Users not found");
+            throw new EntityNotFoundException("User not found");
         }
         return byId.get();
     }
@@ -41,11 +48,14 @@ public class UserService {
     }
 
     public void delete(Long id) {
-        usersRepository.deleteById(id);
+        try {
+            usersRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DeleteViolationException("Delete not allowed due to entity association");
+        }
     }
 
     public List<Users> findAll() {
         return usersRepository.findAll();
-
     }
 }
