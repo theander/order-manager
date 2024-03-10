@@ -6,7 +6,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: ${HIBERNATE_DDL:update}
+      ddl-auto: ${HIBERNATE_DDL:create-drop}
     properties:
       hibernate:
         format_sql: true
