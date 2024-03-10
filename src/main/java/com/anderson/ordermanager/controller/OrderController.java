@@ -1,7 +1,8 @@
 package com.anderson.ordermanager.controller;
 
-import com.anderson.ordermanager.controller.dto.OrderDto;
+import com.anderson.ordermanager.dto.OrderDto;
 import com.anderson.ordermanager.entity.Orders;
+import com.anderson.ordermanager.service.BusinessService;
 import com.anderson.ordermanager.service.OrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,14 +16,18 @@ import static org.springframework.http.HttpStatus.OK;
 @RequestMapping("/api")
 public class OrderController {
     private final OrderService orderService;
+    private final BusinessService businessService;
 
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, BusinessService businessService) {
         this.orderService = orderService;
+        this.businessService = businessService;
     }
 
     @PostMapping("/order")
     public ResponseEntity<Orders> createOrder(@RequestBody OrderDto orderDto) {
-        return new ResponseEntity<>(orderService.create(orderDto), HttpStatus.CREATED);
+        Orders orders = orderService.create(orderDto);
+        businessService.satisfyTransaction();
+        return new ResponseEntity<>(orders, HttpStatus.CREATED);
     }
 
     @GetMapping("order/{id}")
@@ -43,7 +48,7 @@ public class OrderController {
     }
 
     @DeleteMapping("order/{id}")
-    public ResponseEntity<Object> deleteorder(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<Object> deleteOrder(@PathVariable(value = "id") Long id) {
         orderService.delete(id);
         return ResponseEntity.noContent().build();
     }

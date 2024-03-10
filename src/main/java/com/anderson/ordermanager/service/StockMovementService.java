@@ -1,8 +1,9 @@
 package com.anderson.ordermanager.service;
 
-import com.anderson.ordermanager.controller.dto.StockMovementDto;
+import com.anderson.ordermanager.dto.StockMovementDto;
 import com.anderson.ordermanager.entity.Item;
 import com.anderson.ordermanager.entity.StockMovement;
+import com.anderson.ordermanager.enums.StatusEnum;
 import com.anderson.ordermanager.repository.StockMovementRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -18,33 +19,44 @@ public class StockMovementService {
         this.stockMovementRepository = stockMovementRepository;
     }
 
-    public void create(StockMovementDto stockMovementDto) {
+    public StockMovement create(StockMovementDto stockMovementDto) {
         StockMovement stockMovement = new StockMovement();
         Item item = new Item();
-        item.setId(stockMovementDto.getItem_id());
+        item.setId(stockMovementDto.getItemId());
         stockMovement.setItem(item);
         stockMovement.setQuantity(stockMovementDto.getQuantity());
-        stockMovementRepository.save(stockMovement);
+        stockMovement.setStatus(StatusEnum.CREATED);
 
+        return stockMovementRepository.save(stockMovement);
     }
 
-    public StockMovement findById(Long id){
+    public StockMovement findById(Long id) {
         Optional<StockMovement> byId = stockMovementRepository.findById(id);
-        if(byId.isEmpty()){
+        if (byId.isEmpty()) {
             throw new EntityNotFoundException("StockMovement not found");
         }
         return byId.get();
     }
+
     public void update(Long id, StockMovementDto stockMovementDto) {
+        Item item = new Item();
+        item.setId(stockMovementDto.getItemId());
         StockMovement stockMovement = findById(id);
         stockMovement.setQuantity(stockMovementDto.getQuantity());
+        stockMovement.setStatus(stockMovementDto.getStatus());
+        stockMovement.setItem(item);
         stockMovementRepository.save(stockMovement);
     }
-    public void delete(Long id){
+
+    public void delete(Long id) {
         stockMovementRepository.deleteById(id);
     }
 
     public List<StockMovement> findAll() {
         return stockMovementRepository.findAll();
+    }
+
+    public List<StockMovement> findStockMovementByStatus(StatusEnum status) {
+        return stockMovementRepository.findByStatusOrderByCreationDateAsc(status);
     }
 }

@@ -1,9 +1,10 @@
 package com.anderson.ordermanager.service;
 
-import com.anderson.ordermanager.controller.dto.OrderDto;
+import com.anderson.ordermanager.dto.OrderDto;
 import com.anderson.ordermanager.entity.Item;
 import com.anderson.ordermanager.entity.Orders;
 import com.anderson.ordermanager.entity.Users;
+import com.anderson.ordermanager.enums.StatusEnum;
 import com.anderson.ordermanager.repository.OrdersRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class OrderService {
         item.setId(orderDto.getItemId());
         Orders order = new Orders();
         order.setQuantity(orderDto.getQuantity());
+        order.setStatus(StatusEnum.CREATED);
         order.setUser(users);
         order.setItem(item);
         return orderRepository.save(order);
@@ -34,14 +36,18 @@ public class OrderService {
     public Orders findById(Long id) {
         Optional<Orders> byId = orderRepository.findById(id);
         if (byId.isEmpty()) {
-            throw new EntityNotFoundException("order not found");
+            throw new EntityNotFoundException("Order not found");
         }
         return byId.get();
     }
 
     public Orders update(Long id, OrderDto orderDto) {
+        Users users = new Users();
+        users.setId(orderDto.getUserId());
+        Item item = new Item();
+        item.setId(orderDto.getItemId());
         Orders order = findById(id);
-        order.setQuantity(orderDto.getQuantity());
+        order.setStatus(orderDto.getStatusEnum());
         return orderRepository.save(order);
     }
 
@@ -52,4 +58,9 @@ public class OrderService {
     public List<Orders> findAll() {
         return orderRepository.findAll();
     }
+
+    public List<Orders> findOrderByStatus(StatusEnum status, StatusEnum status1) {
+        return orderRepository.findAllByStatusOrStatusOrderByCreationDateAsc(status, status1);
+    }
+
 }

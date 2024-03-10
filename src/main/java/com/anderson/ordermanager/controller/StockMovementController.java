@@ -1,7 +1,8 @@
 package com.anderson.ordermanager.controller;
 
-import com.anderson.ordermanager.controller.dto.StockMovementDto;
+import com.anderson.ordermanager.dto.StockMovementDto;
 import com.anderson.ordermanager.entity.StockMovement;
+import com.anderson.ordermanager.service.BusinessService;
 import com.anderson.ordermanager.service.StockMovementService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,14 +14,18 @@ import java.util.List;
 @RequestMapping("api")
 public class StockMovementController {
     private final StockMovementService stockMovementService;
+    private final BusinessService businessService;
 
-    public StockMovementController(StockMovementService stockMovementService) {
+    public StockMovementController(StockMovementService stockMovementService, BusinessService businessService) {
         this.stockMovementService = stockMovementService;
+        this.businessService = businessService;
     }
 
     @PostMapping("stock-movement")
     public ResponseEntity<StockMovementDto> createStockMovement(@RequestBody StockMovementDto stockMovementDto) {
+
         stockMovementService.create(stockMovementDto);
+        businessService.satisfyTransaction();
         return new ResponseEntity<>(stockMovementDto, HttpStatus.CREATED);
     }
 

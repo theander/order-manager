@@ -1,4 +1,4 @@
-package com.anderson.ordermanager.controller.dto;
+package com.anderson.ordermanager.dto;
 
 import lombok.Data;
 @Data

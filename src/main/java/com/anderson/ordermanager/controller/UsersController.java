@@ -1,6 +1,6 @@
 package com.anderson.ordermanager.controller;
 
-import com.anderson.ordermanager.controller.dto.UserDto;
+import com.anderson.ordermanager.dto.UserDto;
 import com.anderson.ordermanager.entity.Users;
 import com.anderson.ordermanager.service.UserService;
 import org.springframework.http.HttpStatus;

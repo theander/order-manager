@@ -1,7 +1,7 @@
 package com.anderson.ordermanager.controller;
 
-import com.anderson.ordermanager.controller.dto.ItemDto;
-import com.anderson.ordermanager.controller.dto.SortEnum;
+import com.anderson.ordermanager.dto.ItemDto;
+import com.anderson.ordermanager.dto.SortEnum;
 import com.anderson.ordermanager.entity.Item;
 import com.anderson.ordermanager.service.ItemService;
 import org.springframework.data.domain.Sort;

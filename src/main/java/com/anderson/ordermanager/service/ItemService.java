@@ -1,6 +1,6 @@
 package com.anderson.ordermanager.service;
 
-import com.anderson.ordermanager.controller.dto.ItemDto;
+import com.anderson.ordermanager.dto.ItemDto;
 import com.anderson.ordermanager.entity.Item;
 import com.anderson.ordermanager.repository.ItemRepository;
 import jakarta.persistence.EntityNotFoundException;
