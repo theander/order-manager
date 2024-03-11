@@ -2,8 +2,10 @@ package com.anderson.ordermanager.controller;
 
 import com.anderson.ordermanager.dto.OrderDto;
 import com.anderson.ordermanager.entity.Orders;
+import com.anderson.ordermanager.enums.StatusEnum;
 import com.anderson.ordermanager.service.BusinessService;
 import com.anderson.ordermanager.service.OrderService;
+import jakarta.websocket.server.PathParam;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,8 +38,8 @@ public class OrderController {
     }
 
     @GetMapping("order")
-    public ResponseEntity<List<Orders>> findAll() {
-        List<Orders> orderList = orderService.findAll();
+    public ResponseEntity<List<Orders>> findAll(@RequestParam(value = "status", required = false) StatusEnum statusFilter) {
+        List<Orders> orderList = statusFilter != null ? orderService.findAllByStatus(statusFilter) : orderService.findAll();
         return new ResponseEntity<>(orderList, OK);
     }
 

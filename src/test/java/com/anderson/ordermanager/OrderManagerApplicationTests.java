@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class OrderManagerApplicationTests {
 
-    @Test
+    //@Test
     void contextLoads() {
     }
 

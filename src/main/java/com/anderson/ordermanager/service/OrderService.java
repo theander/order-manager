@@ -5,8 +5,8 @@ import com.anderson.ordermanager.entity.Item;
 import com.anderson.ordermanager.entity.Orders;
 import com.anderson.ordermanager.entity.Users;
 import com.anderson.ordermanager.enums.StatusEnum;
+import com.anderson.ordermanager.exception.custom.EntityNotFoundException;
 import com.anderson.ordermanager.repository.OrdersRepository;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -58,7 +58,9 @@ public class OrderService {
     public List<Orders> findAll() {
         return orderRepository.findAll();
     }
-
+    public List<Orders> findAllByStatus(StatusEnum statusFilter) {
+        return orderRepository.findAllByStatus(statusFilter);
+    }
     public List<Orders> findOrderByStatus(StatusEnum status, StatusEnum status1) {
         return orderRepository.findAllByStatusOrStatusOrderByCreationDateAsc(status, status1);
     }

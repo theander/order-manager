@@ -21,7 +21,6 @@ public class LogController {
             return ResponseEntity.notFound().build();
         }
         byte[] logContent = Files.readAllBytes(logFilePath);
-
         return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_OCTET_STREAM)
                 .header("Content-Disposition", "attachment; filename=\"application.log\"")

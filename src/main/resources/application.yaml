@@ -6,14 +6,14 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: ${HIBERNATE_DDL:create-drop}
+      ddl-auto: ${HIBERNATE_DDL:update}
     properties:
       hibernate:
         format_sql: true
     show-sql: true
   mail:
-    host: sandbox.smtp.mailtrap.io
-    port: 25
+    host: ${EMAIL_HOST}
+    port: ${EMAIL_PORT}
     username: ${EMAIL_USERNAME}
     password: ${EMAIL_PASSWORD}
     properties:
@@ -22,6 +22,12 @@ spring:
           auth: true
           starttls:
             enable: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+app:
+  email-address-from:
+    email: ${EMAIL_ADDRESS_FROM}
 
 
 server:

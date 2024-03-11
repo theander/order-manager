@@ -9,6 +9,7 @@ import com.anderson.ordermanager.entity.Users;
 import com.anderson.ordermanager.enums.StatusEnum;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import java.util.List;
 @Service
 public class BusinessService {
     private static final Logger logger = LoggerFactory.getLogger(BusinessService.class);
-    private static final String EMAIL_FROM = "noreply@ordermanager.com";
+    @Value("${app.email-address-from.email}") private String EMAIL_FROM;
 
     private final StockMovementService stockMovementService;
     private final OrderService orderService;
@@ -58,9 +59,7 @@ public class BusinessService {
             } else {
                 pendingOrder(order);
             }
-
         }
-
     }
 
     private void pendingOrder(Orders order) {
@@ -88,17 +87,18 @@ public class BusinessService {
         OrderDto orderDto = new OrderDto();
         orderDto.setStatusEnum(StatusEnum.DONE);
         orderDto.setQuantity(order.getQuantity());
-        orderDto.setItemId(orderDto.getItemId());
+        orderDto.setItemId(order.getItem().getId());
         orderDto.setUserId(order.getUser().getId());
         Orders updateOrder = orderService.update(order.getId(), orderDto);
         Users userById = userService.findById(updateOrder.getUser().getId());
+        logger.info("Order id: " + order.getId() +" "+ orderDto + " was completed !!!");
         emailService.sendEmail(EmailDto.builder()
                         .from(EMAIL_FROM)
                 .to(userById.getEmail())
                 .subject("Order Manager - Completed")
-                .body("Order "+ updateOrder+ "was completed.")
+                .body("Order id:"+ updateOrder.getId() +" quantity: "+updateOrder.getQuantity()+ " was completed!!!")
                 .build());
-        logger.info("Order id: " + order.getId() +" "+ orderDto + " was completed !!!");
+        logger.info("Email was sent to: "+userById.getEmail());
     }
 
     private void resizeStock(long diff, List<StockMovement> stockMovementList) {

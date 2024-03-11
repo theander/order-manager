@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface OrdersRepository extends JpaRepository<Orders, Long> {
     List<Orders> findAllByStatusOrStatusOrderByCreationDateAsc(StatusEnum status1, StatusEnum status2);
+    List<Orders> findAllByStatus(StatusEnum statusFilter);
 }

@@ -6,8 +6,10 @@
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} - %msg%n</pattern>
 <!--            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>-->
         </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.CleanRollingPolicy">
+            <fileNamePattern>logs/application.log</fileNamePattern>
+        </rollingPolicy>
     </appender>
-
     <logger name="com.anderson.ordermanager" level="INFO">
         <appender-ref ref="FILE" />
     </logger>
