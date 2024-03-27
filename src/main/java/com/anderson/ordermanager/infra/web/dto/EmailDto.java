@@ -1,4 +1,4 @@
-package com.anderson.ordermanager.web.dto;
+package com.anderson.ordermanager.infra.web.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

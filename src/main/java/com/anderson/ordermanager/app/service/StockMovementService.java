@@ -1,67 +1,50 @@
 package com.anderson.ordermanager.app.service;
 
-import com.anderson.ordermanager.web.dto.StockMovementDto;
-import com.anderson.ordermanager.app.entity.Item;
-import com.anderson.ordermanager.app.entity.StockMovement;
+
 import com.anderson.ordermanager.app.entity.StatusEnum;
-import com.anderson.ordermanager.infra.repository.StockMovementRepository;
-import jakarta.persistence.EntityNotFoundException;
+import com.anderson.ordermanager.app.entity.StockMovement;
+import com.anderson.ordermanager.infra.service.StockMovementRepositoryService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class StockMovementService {
-    private final StockMovementRepository stockMovementRepository;
+    private final StockMovementRepositoryService stockMovementRepositoryService;
 
-    public StockMovementService(StockMovementRepository stockMovementRepository) {
-        this.stockMovementRepository = stockMovementRepository;
-    }
+	public StockMovementService(StockMovementRepositoryService stockMovementRepositoryService) {
+		this.stockMovementRepositoryService = stockMovementRepositoryService;
+	}
 
-    public StockMovement create(StockMovementDto stockMovementDto) {
-        StockMovement stockMovement = new StockMovement();
-        Item item = new Item();
-        item.setId(stockMovementDto.getItemId());
-        stockMovement.setItem(item);
-        stockMovement.setQuantity(stockMovementDto.getQuantity());
+	public StockMovement create(StockMovement stockMovement) {
         stockMovement.setStatus(StatusEnum.CREATED);
-
-        return stockMovementRepository.save(stockMovement);
+        return stockMovementRepositoryService.save(stockMovement);
     }
 
     public StockMovement findById(Long id) {
-        Optional<StockMovement> byId = stockMovementRepository.findById(id);
-        if (byId.isEmpty()) {
-            throw new EntityNotFoundException("StockMovement not found");
-        }
-        return byId.get();
+        return stockMovementRepositoryService.findById(id);
     }
 
-    public void update(Long id, StockMovementDto stockMovementDto) {
-        Item item = new Item();
-        item.setId(stockMovementDto.getItemId());
-        StockMovement stockMovement = findById(id);
-        stockMovement.setQuantity(stockMovementDto.getQuantity());
-        stockMovement.setStatus(stockMovementDto.getStatus());
-        stockMovement.setItem(item);
-        stockMovementRepository.save(stockMovement);
+    public void update(Long id, StockMovement stockMovement) {
+        StockMovement byId = findById(id);
+        stockMovement.setId(byId.getId());
+        stockMovementRepositoryService.update(stockMovement);
     }
 
     public void delete(Long id) {
-        stockMovementRepository.deleteById(id);
+        stockMovementRepositoryService.deleteById(id);
     }
 
     public Page<StockMovement> findAll(Pageable pageable) {
-        return stockMovementRepository.findAll(pageable);
+        return stockMovementRepositoryService.findAll(pageable);
     }
 
     public Page<StockMovement> findStockMovementByStatus(StatusEnum status, Pageable pageable) {
-        return stockMovementRepository.findByStatusOrderByCreationDateAsc(status, pageable);
+        return stockMovementRepositoryService.findByStatusOrderByCreationDateAsc(status, pageable);
     }
     public List<StockMovement> findStockMovementByStatus(StatusEnum status) {
-        return stockMovementRepository.findByStatusOrderByCreationDateAsc(status);
+        return stockMovementRepositoryService.findByStatusOrderByCreationDateAsc(status);
     }
 }

@@ -1,6 +1,6 @@
 package com.anderson.ordermanager.app.service;
 
-import com.anderson.ordermanager.web.dto.EmailDto;
+import com.anderson.ordermanager.infra.web.dto.EmailDto;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;

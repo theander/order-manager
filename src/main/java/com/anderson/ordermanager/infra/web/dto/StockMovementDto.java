@@ -1,4 +1,4 @@
-package com.anderson.ordermanager.web.dto;
+package com.anderson.ordermanager.infra.web.dto;
 
 import com.anderson.ordermanager.app.entity.StatusEnum;
 import jakarta.validation.constraints.Min;

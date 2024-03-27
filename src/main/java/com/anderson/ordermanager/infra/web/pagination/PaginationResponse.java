@@ -1,4 +1,4 @@
-package com.anderson.ordermanager.web.pagination;
+package com.anderson.ordermanager.infra.web.pagination;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

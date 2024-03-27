@@ -1,4 +1,4 @@
-package com.anderson.ordermanager.web.controller;
+package com.anderson.ordermanager.infra.web.controller;
 
 import com.anderson.ordermanager.app.service.LogService;
 import org.springframework.http.MediaType;

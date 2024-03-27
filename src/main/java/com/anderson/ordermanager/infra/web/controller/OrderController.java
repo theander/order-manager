@@ -1,22 +1,21 @@
-package com.anderson.ordermanager.web.controller;
+package com.anderson.ordermanager.infra.web.controller;
 
-import com.anderson.ordermanager.app.entity.Item;
-import com.anderson.ordermanager.web.dto.OrderDto;
+import com.anderson.ordermanager.infra.mapper.OrderMapper;
+import com.anderson.ordermanager.infra.web.dto.OrderDto;
+import com.anderson.ordermanager.infra.web.dto.SortEnum;
+import com.anderson.ordermanager.infra.web.pagination.Pagination;
+import com.anderson.ordermanager.infra.web.pagination.PaginationResponse;
 import com.anderson.ordermanager.app.entity.Orders;
-import com.anderson.ordermanager.app.entity.StatusEnum;
+import com.anderson.ordermanager.infra.entities.StatusEnum;
 import com.anderson.ordermanager.app.service.BusinessService;
 import com.anderson.ordermanager.app.service.OrderService;
-import com.anderson.ordermanager.web.dto.SortEnum;
-import com.anderson.ordermanager.web.pagination.Pagination;
-import com.anderson.ordermanager.web.pagination.PaginationResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
 @RestController
@@ -24,21 +23,25 @@ import static org.springframework.http.HttpStatus.OK;
 public class OrderController {
 	private final OrderService orderService;
 	private final BusinessService businessService;
+	private final Pagination pagination;
+	private final OrderMapper mapper;
 
-	public OrderController(OrderService orderService, BusinessService businessService) {
+	public OrderController(OrderService orderService, BusinessService businessService, Pagination pagination, OrderMapper mapper) {
 		this.orderService = orderService;
 		this.businessService = businessService;
+		this.pagination = pagination;
+		this.mapper = mapper;
 	}
 
 	@PostMapping("/order")
 	public ResponseEntity<Orders> createOrder(@RequestBody OrderDto orderDto) {
-		Orders orders = orderService.create(orderDto);
+		Orders orders = orderService.create(mapper.toDomain(orderDto));
 		businessService.satisfyTransaction();
-		return new ResponseEntity<>(orders, HttpStatus.CREATED);
+		return new ResponseEntity<>(orders, CREATED);
 	}
 
 	@GetMapping("order/{id}")
-	public ResponseEntity<Orders> findorderById(@PathVariable(value = "id") String id) {
+	public ResponseEntity<Orders> findOrderById(@PathVariable(value = "id") String id) {
 		return new ResponseEntity<>(orderService.findById(Long.parseLong(id)), OK);
 	}
 
@@ -49,17 +52,16 @@ public class OrderController {
 			@RequestParam(defaultValue = "10") int size,
 			@RequestParam(defaultValue = "status", required = false) String sortBy,
 			@RequestParam(defaultValue = "ASC", required = false) SortEnum sortDirection) {
-		Pagination pagination = new Pagination();
 		Pageable pageable = pagination.createPageable(page, size, sortBy, sortDirection.getValue());
 		Page<Orders> itemsPage = statusFilter != null ? orderService.findAllByStatus(statusFilter, pageable) : orderService.findAll(pageable);
-		Pagination pagination1 = pagination.createPagination(page, size, sortBy, sortDirection.getValue(), itemsPage);
+		Pagination pagination1 = pagination.createPagination(page, size, sortBy, sortDirection, itemsPage);
 		PaginationResponse response = new PaginationResponse(itemsPage.getContent(), pagination1);
 		return ResponseEntity.ok(response);
 	}
 
 	@PutMapping("order/{id}")
 	public ResponseEntity<Orders> updateOrder(@PathVariable(value = "id") Long id, @RequestBody OrderDto orderDto) {
-		Orders o = orderService.update(id, orderDto);
+		Orders o = orderService.update(id, mapper.toDomain(orderDto));
 		return new ResponseEntity<>(o, OK);
 	}
 

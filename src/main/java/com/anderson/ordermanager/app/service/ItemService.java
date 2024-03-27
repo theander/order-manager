@@ -1,11 +1,9 @@
 package com.anderson.ordermanager.app.service;
 
-import com.anderson.ordermanager.web.dto.ItemDto;
 import com.anderson.ordermanager.app.entity.Item;
 import com.anderson.ordermanager.app.exception.custom.DeleteViolationException;
-import com.anderson.ordermanager.app.exception.custom.EntityNotFoundException;
-import com.anderson.ordermanager.app.exception.custom.UniqueConstraintViolationException;
-import com.anderson.ordermanager.infra.repository.ItemRepository;
+import com.anderson.ordermanager.infra.service.ItemRepositoryService;
+import com.anderson.ordermanager.infra.web.dto.ItemDto;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,53 +11,38 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ItemService {
-    private final ItemRepository itemRepository;
+	private final ItemRepositoryService itemRepositoryService;
 
-    public ItemService(ItemRepository itemRepository) {
-        this.itemRepository = itemRepository;
-    }
+	public ItemService(ItemRepositoryService itemRepositoryService) {
+		this.itemRepositoryService = itemRepositoryService;
+	}
 
-    public void create(ItemDto itemDto) {
-        Item item = new Item();
-        item.setName(itemDto.getName());
-        try {
-            itemRepository.save(item);
-        } catch (
-                DataIntegrityViolationException e) {
-            throw new UniqueConstraintViolationException("Conflict!!!. Item already exists.");
-        }
-    }
+	public Item create(Item item) {
+		return itemRepositoryService.save(item);
+	}
 
-    public Item findById(Long id) {
-        Optional<Item> byId = itemRepository.findById(id);
-        if (byId.isEmpty()) {
-            throw new EntityNotFoundException("Item not found");
-        }
-        return byId.get();
-    }
+	public Item findById(Long id) {
+		return itemRepositoryService.findById(id);
+	}
 
-    public void update(Long id, ItemDto itemDto) {
-        Item item = findById(id);
-        item.setName(itemDto.getName());
-        itemRepository.save(item);
-    }
+	public void update(Long id, Item item) {
+		Item i = findById(id);
+		item.setId(i.getId());
+		itemRepositoryService.update(item);
+	}
 
-    public void delete(Long id) {
-        try {
-            itemRepository.deleteById(id);
-        } catch (DataIntegrityViolationException e){
-            throw new DeleteViolationException("Delete not allowed due to entity association");
-        }
-    }
+	public void delete(Long id) {
+		itemRepositoryService.deleteById(id);
+	}
 
-    public List<Item> findAll(Sort sort) {
-        return itemRepository.findAll(sort);
-    }
-    public Page<Item> findAll(Pageable pageable) {
-        return itemRepository.findAll(pageable);
-    }
+	public List<Item> findAll(Sort sort) {
+		return itemRepositoryService.findAll(sort);
+	}
+
+	public Page<Item> findAll(Pageable pageable) {
+		return itemRepositoryService.findAll(pageable);
+	}
 }

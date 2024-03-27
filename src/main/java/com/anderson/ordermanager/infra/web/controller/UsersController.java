@@ -1,32 +1,34 @@
-package com.anderson.ordermanager.web.controller;
+package com.anderson.ordermanager.infra.web.controller;
 
-import com.anderson.ordermanager.app.entity.Item;
-import com.anderson.ordermanager.web.dto.SortEnum;
-import com.anderson.ordermanager.web.dto.UserDto;
+import com.anderson.ordermanager.infra.mapper.UserMapper;
+import com.anderson.ordermanager.infra.web.dto.SortEnum;
+import com.anderson.ordermanager.infra.web.pagination.Pagination;
+import com.anderson.ordermanager.infra.web.pagination.PaginationResponse;
+import com.anderson.ordermanager.infra.web.dto.UserDto;
 import com.anderson.ordermanager.app.entity.Users;
 import com.anderson.ordermanager.app.service.UserService;
-import com.anderson.ordermanager.web.pagination.Pagination;
-import com.anderson.ordermanager.web.pagination.PaginationResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api")
 public class UsersController {
 	private final UserService userService;
+	private final Pagination pagination;
+	private final UserMapper mapper;
 
-	public UsersController(UserService userService) {
+	public UsersController(UserService userService, Pagination pagination, UserMapper mapper) {
 		this.userService = userService;
+		this.pagination = pagination;
+		this.mapper = mapper;
 	}
 
 	@PostMapping("user")
 	public ResponseEntity<Users> createUser(@RequestBody UserDto userDto) {
-		Users users = userService.create(userDto);
+		Users users = userService.create(mapper.toDomain(userDto));
 		return new ResponseEntity<>(users, HttpStatus.CREATED);
 	}
 
@@ -42,10 +44,9 @@ public class UsersController {
 			@RequestParam(defaultValue = "name") String sortBy,
 			@RequestParam(defaultValue = "ASC", required = false) SortEnum sortDirection) {
 
-		Pagination pagination = new Pagination();
 		Pageable pageable = pagination.createPageable(page, size, sortBy, sortDirection.getValue());
 		Page<Users> itemsPage = userService.findAll(pageable);
-		Pagination pagination1 = pagination.createPagination(page, size, sortBy, sortDirection.getValue(), itemsPage);
+		Pagination pagination1 = pagination.createPagination(page, size, sortBy, sortDirection, itemsPage);
 		PaginationResponse response = new PaginationResponse(itemsPage.getContent(), pagination1);
 		return ResponseEntity.ok(response);
 	}
