@@ -2,8 +2,6 @@ package com.anderson.ordermanager.config;
 
 import com.anderson.ordermanager.app.gateways.*;
 import com.anderson.ordermanager.app.service.*;
-import com.anderson.ordermanager.infra.mapper.StockMovementMapper;
-import com.anderson.ordermanager.infra.service.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

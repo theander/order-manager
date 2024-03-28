@@ -1,39 +1,37 @@
 package com.anderson.ordermanager.app.service;
 
 import com.anderson.ordermanager.app.entity.Users;
-import com.anderson.ordermanager.infra.service.UsersRepositoryService;
-import com.anderson.ordermanager.infra.web.dto.UserDto;
+import com.anderson.ordermanager.app.gateways.UserGateway;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public class UserService {
-	private final UsersRepositoryService usersRepositoryService;
+	private final UserGateway userGateway;
 
-	public UserService(UsersRepositoryService usersRepositoryService) {
-		this.usersRepositoryService = usersRepositoryService;
+	public UserService(UserGateway userGateway) {
+		this.userGateway = userGateway;
 	}
 
 	public Users create(Users users) {
-		return usersRepositoryService.save(users);
+		return userGateway.save(users);
 	}
 
 	public Users findById(Long id) {
-		return usersRepositoryService.findById(id);
+		return userGateway.findById(id);
 	}
 
-	public void update(Long id, UserDto usersDto) {
+	public void update(Long id, Users users) {
 		Users user = findById(id);
-		user.setName(usersDto.getName());
-		user.setEmail(usersDto.getEmail());
-		usersRepositoryService.save(user);
+		users.setId(user.getId());
+		userGateway.save(user);
 
 	}
 
 	public void delete(Long id) {
-		usersRepositoryService.deleteById(id);
+		userGateway.deleteById(id);
 	}
 
 	public Page<Users> findAll(Pageable pageable) {
-		return usersRepositoryService.findAll(pageable);
+		return userGateway.findAll(pageable);
 	}
 }

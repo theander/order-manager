@@ -1,12 +1,11 @@
 package com.anderson.ordermanager.app.service;
 
+import com.anderson.ordermanager.app.entity.Item;
 import com.anderson.ordermanager.app.entity.Orders;
 import com.anderson.ordermanager.app.entity.StockMovement;
 import com.anderson.ordermanager.app.entity.Users;
 import com.anderson.ordermanager.infra.entities.StatusEnum;
-import com.anderson.ordermanager.infra.mapper.StockMovementMapper;
 import com.anderson.ordermanager.infra.web.dto.EmailDto;
-import com.anderson.ordermanager.infra.web.dto.StockMovementDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,14 +25,12 @@ public class BusinessService {
 	private final EmailService emailService;
 	private final UserService userService;
 
-	private final StockMovementMapper stockMovementMapper;
 
-	public BusinessService(StockMovementService stockMovementService, OrderService orderService, EmailService emailService, UserService userService, StockMovementMapper stockMovementMapper) {
+	public BusinessService(StockMovementService stockMovementService, OrderService orderService, EmailService emailService, UserService userService) {
 		this.stockMovementService = stockMovementService;
 		this.orderService = orderService;
 		this.emailService = emailService;
 		this.userService = userService;
-		this.stockMovementMapper = stockMovementMapper;
 	}
 
 	public void satisfyTransaction() {
@@ -95,10 +92,12 @@ public class BusinessService {
 	}
 
 	private void resizeStock(long diff, List<StockMovement> stockMovementList) {
-		StockMovementDto dto = new StockMovementDto();
-		dto.setItemId(stockMovementList.get(0).getItem().getId());
-		dto.setQuantity(diff);
-		StockMovement stockMovement = stockMovementService.create(stockMovementMapper.toDomain(dto));
+		StockMovement sm = new StockMovement();
+		Item i = new Item();
+		i.setId(stockMovementList.get(0).getItem().getId());
+		sm.setItem(i);
+		sm.setQuantity(diff);
+		StockMovement stockMovement = stockMovementService.create(sm);
 		logger.info("StockMovement " + stockMovement + " was created due to resizing");
 
 	}
