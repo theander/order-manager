@@ -1,18 +1,13 @@
 package com.anderson.ordermanager.app.service;
 
 import com.anderson.ordermanager.app.entity.Item;
-import com.anderson.ordermanager.app.exception.custom.DeleteViolationException;
 import com.anderson.ordermanager.infra.service.ItemRepositoryService;
-import com.anderson.ordermanager.infra.web.dto.ItemDto;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public class ItemService {
 	private final ItemRepositoryService itemRepositoryService;
 

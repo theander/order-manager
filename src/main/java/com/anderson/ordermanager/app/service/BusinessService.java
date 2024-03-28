@@ -10,19 +10,17 @@ import com.anderson.ordermanager.infra.web.dto.StockMovementDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.anderson.ordermanager.app.entity.StatusEnum.*;
 
-@Service
+
 public class BusinessService {
 	private static final Logger logger = LoggerFactory.getLogger(BusinessService.class);
 	@Value("${app.email-address-from.email}")
 	private String EMAIL_FROM;
-
 	private final StockMovementService stockMovementService;
 	private final OrderService orderService;
 	private final EmailService emailService;

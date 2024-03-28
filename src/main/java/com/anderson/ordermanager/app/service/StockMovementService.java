@@ -6,11 +6,9 @@ import com.anderson.ordermanager.app.entity.StockMovement;
 import com.anderson.ordermanager.infra.service.StockMovementRepositoryService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 public class StockMovementService {
     private final StockMovementRepositoryService stockMovementRepositoryService;
 

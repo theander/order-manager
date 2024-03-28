@@ -1,17 +1,16 @@
 package com.anderson.ordermanager.infra.web.controller;
 
+import com.anderson.ordermanager.app.entity.Orders;
+import com.anderson.ordermanager.app.service.BusinessService;
+import com.anderson.ordermanager.app.service.OrderService;
+import com.anderson.ordermanager.infra.entities.StatusEnum;
 import com.anderson.ordermanager.infra.mapper.OrderMapper;
 import com.anderson.ordermanager.infra.web.dto.OrderDto;
 import com.anderson.ordermanager.infra.web.dto.SortEnum;
 import com.anderson.ordermanager.infra.web.pagination.Pagination;
 import com.anderson.ordermanager.infra.web.pagination.PaginationResponse;
-import com.anderson.ordermanager.app.entity.Orders;
-import com.anderson.ordermanager.infra.entities.StatusEnum;
-import com.anderson.ordermanager.app.service.BusinessService;
-import com.anderson.ordermanager.app.service.OrderService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

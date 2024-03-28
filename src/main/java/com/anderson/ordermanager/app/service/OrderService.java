@@ -5,13 +5,11 @@ import com.anderson.ordermanager.infra.entities.StatusEnum;
 import com.anderson.ordermanager.infra.service.OrderRepositoryService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 import static com.anderson.ordermanager.app.entity.StatusEnum.CREATED;
 
-@Service
 public class OrderService {
 	private final OrderRepositoryService orderRepositoryService;
 

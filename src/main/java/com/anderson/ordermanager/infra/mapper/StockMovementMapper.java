@@ -1,6 +1,5 @@
 package com.anderson.ordermanager.infra.mapper;
 
-import com.anderson.ordermanager.app.entity.Item;
 import com.anderson.ordermanager.app.entity.StockMovement;
 import com.anderson.ordermanager.infra.entities.StockMovementEntity;
 import com.anderson.ordermanager.infra.web.dto.StockMovementDto;
