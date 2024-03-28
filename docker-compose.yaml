@@ -5,7 +5,6 @@ networks:
     driver: bridge
 
 services:
-
   order-manager:
     container_name: order-manager
   #  image: ''
@@ -17,16 +16,16 @@ services:
       - DATABASE_URL=jdbc:postgresql://db:5432/om?currentSchema=order-manager
       - DATABASE_USER=postgres
       - DATABASE_PASSWORD=orderpass
-      - EMAIL_HOST=x
-      - EMAIL_PASSWORD=x
-      - EMAIL_PORT=587
-      - EMAIL_USERNAME=x
+      - EMAIL_HOST=mailhog
+      - EMAIL_PASSWORD=
+      - EMAIL_PORT=1025
+      - EMAIL_USERNAME=
       - EMAIL_ADDRESS_FROM=noreply@ordermanager.com
     depends_on:
       - db
+      - mailhog
     networks:
       - backend
-
   db:
     image: postgres:16
     ports:
@@ -37,5 +36,14 @@ services:
       - POSTGRES_PASSWORD=orderpass
       - POSTGRES_USER=postgres
       - POSTGRES_DB=om
+    networks:
+      - backend
+
+  mailhog:
+    image: mailhog/mailhog
+    container_name: 'mailhog'
+    ports:
+      - "1025:1025"
+      - "8025:8025"
     networks:
       - backend
