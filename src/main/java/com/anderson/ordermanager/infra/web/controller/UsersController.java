@@ -41,7 +41,7 @@ public class UsersController {
 	public ResponseEntity<?> findAll(
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size,
-			@RequestParam(defaultValue = "name") String sortBy,
+			@RequestParam(defaultValue = "id") String sortBy,
 			@RequestParam(defaultValue = "ASC", required = false) SortEnum sortDirection) {
 
 		Pageable pageable = pagination.createPageable(page, size, sortBy, sortDirection.getValue());

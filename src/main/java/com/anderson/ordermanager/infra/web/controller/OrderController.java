@@ -50,7 +50,7 @@ public class OrderController {
 			@RequestParam(value = "status", required = false) StatusEnum statusFilter,
 			@RequestParam(defaultValue = "0") int page,
 			@RequestParam(defaultValue = "10") int size,
-			@RequestParam(defaultValue = "status", required = false) String sortBy,
+			@RequestParam(defaultValue = "id", required = false) String sortBy,
 			@RequestParam(defaultValue = "ASC", required = false) SortEnum sortDirection) {
 		Pageable pageable = pagination.createPageable(page, size, sortBy, sortDirection.getValue());
 		Page<Orders> itemsPage = statusFilter != null ? orderService.findAllByStatus(statusFilter, pageable) : orderService.findAll(pageable);
