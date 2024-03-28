@@ -4,6 +4,7 @@ import com.anderson.ordermanager.app.entity.Item;
 import com.anderson.ordermanager.app.exception.custom.DeleteViolationException;
 import com.anderson.ordermanager.app.exception.custom.EntityNotFoundException;
 import com.anderson.ordermanager.app.exception.custom.UniqueConstraintViolationException;
+import com.anderson.ordermanager.app.gateways.ItemGateway;
 import com.anderson.ordermanager.infra.entities.ItemEntity;
 import com.anderson.ordermanager.infra.mapper.ItemMapper;
 import com.anderson.ordermanager.infra.repository.ItemRepository;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ItemRepositoryService {
+public class ItemRepositoryService implements ItemGateway {
 	private final ItemRepository itemRepository;
 	private final ItemMapper mapper;
 

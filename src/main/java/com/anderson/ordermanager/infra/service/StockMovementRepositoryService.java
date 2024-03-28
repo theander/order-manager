@@ -2,6 +2,7 @@ package com.anderson.ordermanager.infra.service;
 
 import com.anderson.ordermanager.app.entity.StatusEnum;
 import com.anderson.ordermanager.app.entity.StockMovement;
+import com.anderson.ordermanager.app.gateways.StockMovementGateway;
 import com.anderson.ordermanager.infra.entities.StockMovementEntity;
 import com.anderson.ordermanager.infra.mapper.StockMovementMapper;
 import com.anderson.ordermanager.infra.repository.StockMovementRepository;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class StockMovementRepositoryService {
+public class StockMovementRepositoryService implements StockMovementGateway {
 	private final StockMovementRepository stockMovementRepository;
 private final StockMovementMapper mapper;
 	public StockMovementRepositoryService(StockMovementRepository stockMovementRepository, StockMovementMapper mapper) {

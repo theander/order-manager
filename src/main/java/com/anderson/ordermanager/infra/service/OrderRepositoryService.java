@@ -2,6 +2,7 @@ package com.anderson.ordermanager.infra.service;
 
 import com.anderson.ordermanager.app.entity.Orders;
 import com.anderson.ordermanager.app.exception.custom.EntityNotFoundException;
+import com.anderson.ordermanager.app.gateways.OrderGateway;
 import com.anderson.ordermanager.infra.entities.OrdersEntity;
 import com.anderson.ordermanager.infra.entities.StatusEnum;
 import com.anderson.ordermanager.infra.mapper.OrderMapper;
@@ -13,7 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class OrderRepositoryService {
+public class OrderRepositoryService implements OrderGateway {
 	private final OrdersRepository ordersRepository;
 	private final OrderMapper mapper;
 

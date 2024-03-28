@@ -53,7 +53,7 @@ public class UsersController {
 
 	@PutMapping("user/{id}")
 	public ResponseEntity<Object> updateUser(@PathVariable(value = "id") Long id, @RequestBody UserDto userDto) {
-		userService.update(id, userDto);
+		userService.update(id, mapper.toDomain(userDto));
 		return ResponseEntity.ok().build();
 	}
 

@@ -4,6 +4,7 @@ import com.anderson.ordermanager.app.entity.Users;
 import com.anderson.ordermanager.app.exception.custom.DeleteViolationException;
 import com.anderson.ordermanager.app.exception.custom.EntityNotFoundException;
 import com.anderson.ordermanager.app.exception.custom.UniqueConstraintViolationException;
+import com.anderson.ordermanager.app.gateways.UserGateway;
 import com.anderson.ordermanager.infra.entities.UsersEntity;
 import com.anderson.ordermanager.infra.mapper.UserMapper;
 import com.anderson.ordermanager.infra.repository.UsersRepository;
@@ -13,7 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UsersRepositoryService {
+public class UsersRepositoryService implements UserGateway {
 	private final UsersRepository usersRepository;
 	private final UserMapper mapper;
 

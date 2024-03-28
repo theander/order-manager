@@ -1,5 +1,6 @@
 package com.anderson.ordermanager.config;
 
+import com.anderson.ordermanager.app.gateways.*;
 import com.anderson.ordermanager.app.service.*;
 import com.anderson.ordermanager.infra.mapper.StockMovementMapper;
 import com.anderson.ordermanager.infra.service.*;
@@ -9,18 +10,18 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MainAppConfig {
 	@Bean
-	public UserService userService(UsersRepositoryService usersRepositoryService) {
-		return new UserService(usersRepositoryService);
+	public UserService userService(UserGateway userGateway) {
+		return new UserService(userGateway);
 	}
 
 	@Bean
-	public StockMovementService stockMovementService(StockMovementRepositoryService stockMovementRepositoryService) {
-		return new StockMovementService(stockMovementRepositoryService);
+	public StockMovementService stockMovementService(StockMovementGateway stockMovementGateway) {
+		return new StockMovementService(stockMovementGateway);
 	}
 
 	@Bean
-	public OrderService orderService(OrderRepositoryService orderRepositoryService) {
-		return new OrderService(orderRepositoryService);
+	public OrderService orderService(OrderGateway orderGateway) {
+		return new OrderService(orderGateway);
 	}
 
 	@Bean
@@ -29,18 +30,18 @@ public class MainAppConfig {
 	}
 
 	@Bean
-	public ItemService itemService(ItemRepositoryService itemRepositoryService) {
-		return new ItemService(itemRepositoryService);
+	public ItemService itemService(ItemGateway itemGateway) {
+		return new ItemService(itemGateway);
 	}
 
 	@Bean
-	public EmailService emailService(EmailServiceSender emailServiceSender) {
-		return new EmailService(emailServiceSender);
+	public EmailService emailService(EmailGateway emailGateway) {
+		return new EmailService(emailGateway);
 	}
 
 	@Bean
-	public BusinessService businessService(StockMovementService stockMovementService, OrderService orderService, EmailService emailService, UserService userService, StockMovementMapper stockMovementMapper) {
-		return new BusinessService(stockMovementService, orderService, emailService, userService, stockMovementMapper);
+	public BusinessService businessService(StockMovementService stockMovementService, OrderService orderService, EmailService emailService, UserService userService) {
+		return new BusinessService(stockMovementService, orderService, emailService, userService);
 
 	}
 }
