@@ -1,0 +1,41 @@
+version: "3.3"
+
+networks:
+  backend:
+    driver: bridge
+
+services:
+
+  order-manager:
+    container_name: order-manager
+  #  image: ''
+    build: .
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=jdbc:postgresql://db:5432/om?currentSchema=order-manager
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=orderpass
+      - EMAIL_HOST=x
+      - EMAIL_PASSWORD=x
+      - EMAIL_PORT=587
+      - EMAIL_USERNAME=x
+      - EMAIL_ADDRESS_FROM=noreply@ordermanager.com
+    depends_on:
+      - db
+    networks:
+      - backend
+
+  db:
+    image: postgres:16
+    ports:
+      - 5432:5432
+    volumes:
+      - ~/apps/postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=orderpass
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=om
+    networks:
+      - backend
