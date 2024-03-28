@@ -10,7 +10,6 @@ import java.nio.file.Paths;
 
 @Service
 public class LogService {
-
 	public byte[] fetchLog() throws IOException {
 		Path logFilePath = Paths.get("logs/application.log");
 		if (!Files.exists(logFilePath)) {
