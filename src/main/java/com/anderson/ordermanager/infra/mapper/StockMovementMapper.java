@@ -13,6 +13,7 @@ public interface StockMovementMapper {
 	StockMovement toDomain(StockMovementEntity stockMovementEntity);
 	@Mapping(target = "id", ignore = true)
 	@Mapping(target = "creationDate", ignore = true)
+	@Mapping(source = "itemId",target = "item.id")
 	StockMovement toDomain(StockMovementDto stockMovementDto);
 
 }

@@ -13,6 +13,8 @@ public interface OrderMapper {
 	OrdersEntity toEntity(Orders orders);
 	Orders toDomain(OrdersEntity ordersEntity);
 	@Mapping(target = "id",ignore = true)
+	@Mapping(source="userId",target = "user.id")
+	@Mapping(source="itemId",target = "item.id")
 	Orders toDomain(OrderDto orderDto);
 
 	OrdersEntity toDto(Orders order);
