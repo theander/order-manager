@@ -7,23 +7,24 @@ networks:
 services:
   order-manager:
     container_name: order-manager
-  #  image: ''
     build: .
     restart: always
     ports:
       - "8080:8080"
+      - "50005:50005"
     environment:
       - DATABASE_URL=jdbc:postgresql://db:5432/om?currentSchema=order-manager
       - DATABASE_USER=postgres
       - DATABASE_PASSWORD=orderpass
       - EMAIL_HOST=mailhog
-      - EMAIL_PASSWORD=
       - EMAIL_PORT=1025
-      - EMAIL_USERNAME=
       - EMAIL_ADDRESS_FROM=noreply@ordermanager.com
+      - EMAIL_USERNAME=
+      - EMAIL_PASSWORD=
     depends_on:
       - db
       - mailhog
+      - rabbitmq
     networks:
       - backend
   db:
@@ -38,12 +39,20 @@ services:
       - POSTGRES_DB=om
     networks:
       - backend
-
   mailhog:
     image: mailhog/mailhog
     container_name: 'mailhog'
     ports:
       - "1025:1025"
       - "8025:8025"
+    networks:
+      - backend
+  rabbitmq:
+    image: rabbitmq:3.9.29-management
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "15672:15672"
+      - "5672:5672"
     networks:
       - backend

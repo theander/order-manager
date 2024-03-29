@@ -11,6 +11,9 @@ spring:
       hibernate:
         format_sql: true
     show-sql: true
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
   mail:
     host: ${EMAIL_HOST}
     port: ${EMAIL_PORT}
@@ -28,6 +31,5 @@ spring:
 app:
   email-address-from:
     email: ${EMAIL_ADDRESS_FROM}
-
 server:
   port: 8080
