@@ -9,10 +9,13 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface StockMovementMapper {
 	StockMovementEntity toEntity(StockMovement stockMovement);
+
 	StockMovement toDomain(StockMovementEntity stockMovementEntity);
+
 	@Mapping(target = "id", ignore = true)
 	@Mapping(target = "creationDate", ignore = true)
-	@Mapping(source = "itemId",target = "item.id")
+	@Mapping(target = "status", ignore = true)
+	@Mapping(source = "itemId", target = "item.id")
 	StockMovement toDomain(StockMovementDto stockMovementDto);
 
 }

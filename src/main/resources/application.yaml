@@ -14,6 +14,7 @@ spring:
   rabbitmq:
     host: rabbitmq
     port: 5672
+
   mail:
     host: ${EMAIL_HOST}
     port: ${EMAIL_PORT}
@@ -28,6 +29,18 @@ spring:
           connectiontimeout: 5000
           timeout: 5000
           writetimeout: 5000
+management:
+  endpoints:
+    web:
+      exposure:
+        include: 'health,metrics'
+    enabled-by-default: false
+  endpoint:
+    health:
+      enabled: true
+      show-details: always
+    metrics:
+      enabled: true
 app:
   email-address-from:
     email: ${EMAIL_ADDRESS_FROM}
