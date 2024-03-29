@@ -15,6 +15,7 @@ public interface OrderMapper {
 	@Mapping(target = "id", ignore = true)
 	@Mapping(source = "userId", target = "user.id")
 	@Mapping(source = "itemId", target = "item.id")
+	@Mapping(target = "status", ignore = true)
 	Orders toDomain(OrderDto orderDto);
 
 	OrdersEntity toDto(Orders order);

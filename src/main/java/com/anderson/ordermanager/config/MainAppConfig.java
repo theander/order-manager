@@ -23,8 +23,8 @@ public class MainAppConfig {
 	}
 
 	@Bean
-	public LogService logService() {
-		return new LogService();
+	public LogFetchFileService logService(LogFetchFileGateway logGateway) {
+		return new LogFetchFileService(logGateway);
 	}
 
 	@Bean
@@ -38,8 +38,15 @@ public class MainAppConfig {
 	}
 
 	@Bean
-	public BusinessService businessService(StockMovementService stockMovementService, OrderService orderService, EmailService emailService, UserService userService) {
-		return new BusinessService(stockMovementService, orderService, emailService, userService);
+	public LogWriteFileService logWriteFileService(LogWriteFileGateway logWriteFileGateway) {
+		return new LogWriteFileService(logWriteFileGateway);
+	}
+
+	@Bean
+	public BusinessService businessService(StockMovementService stockMovementService, OrderService orderService,
+	                                       EmailService emailService, UserService userService,
+	                                       LogWriteFileService logService) {
+		return new BusinessService(stockMovementService, orderService, emailService, userService, logService);
 
 	}
 }

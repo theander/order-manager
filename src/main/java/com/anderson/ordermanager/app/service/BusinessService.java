@@ -6,8 +6,6 @@ import com.anderson.ordermanager.app.entity.StockMovement;
 import com.anderson.ordermanager.app.entity.Users;
 import com.anderson.ordermanager.infra.entities.StatusEnum;
 import com.anderson.ordermanager.infra.web.dto.EmailDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.util.ArrayList;
@@ -17,20 +15,21 @@ import static com.anderson.ordermanager.app.entity.StatusEnum.*;
 
 
 public class BusinessService {
-	private static final Logger logger = LoggerFactory.getLogger(BusinessService.class);
 	@Value("${app.email-address-from.email}")
 	private String EMAIL_FROM;
 	private final StockMovementService stockMovementService;
 	private final OrderService orderService;
 	private final EmailService emailService;
 	private final UserService userService;
+	private final LogWriteFileService logger;
 
 
-	public BusinessService(StockMovementService stockMovementService, OrderService orderService, EmailService emailService, UserService userService) {
+	public BusinessService(StockMovementService stockMovementService, OrderService orderService, EmailService emailService, UserService userService, LogWriteFileService logger) {
 		this.stockMovementService = stockMovementService;
 		this.orderService = orderService;
 		this.emailService = emailService;
 		this.userService = userService;
+		this.logger = logger;
 	}
 
 	public void satisfyTransaction() {
@@ -66,14 +65,14 @@ public class BusinessService {
 	private void pendingOrder(Orders order) {
 		order.setStatus(PENDING);
 		orderService.update(order.getId(), order);
-		logger.info("Order id: " + order.getId() + " was processed and not satisfied !!!");
+		logger.writeLog("Order id: " + order.getId() + " was processed and not satisfied !!!");
 	}
 
 	private void finishStockMovement(List<StockMovement> stockMovementList) {
 		stockMovementList.forEach(stockMovement -> {
 			stockMovement.setStatus(DONE);
 			stockMovementService.update(stockMovement.getId(), stockMovement);
-			logger.info("StockMovement was generated: " + stockMovement);
+			logger.writeLog("StockMovement was generated: " + stockMovement);
 		});
 	}
 
@@ -81,14 +80,14 @@ public class BusinessService {
 		order.setStatus(DONE);
 		Orders updateOrder = orderService.update(order.getId(), order);
 		Users userById = userService.findById(updateOrder.getUser().getId());
-		logger.info("Order id: " + order.getId() + " " + order + " was completed !!!");
+		logger.writeLog("Order id: " + order.getId() + " " + order + " was completed !!!");
 		emailService.sendEmail(EmailDto.builder()
 				.from(EMAIL_FROM)
 				.to(userById.getEmail())
 				.subject("Order Manager - Completed")
 				.body("Order id:" + updateOrder.getId() + " quantity: " + updateOrder.getQuantity() + " was completed!!!")
 				.build());
-		logger.info("Email was sent to: " + userById.getEmail());
+		logger.writeLog("Email was sent to: " + userById.getEmail());
 	}
 
 	private void resizeStock(long diff, List<StockMovement> stockMovementList) {
@@ -98,7 +97,7 @@ public class BusinessService {
 		sm.setItem(i);
 		sm.setQuantity(diff);
 		StockMovement stockMovement = stockMovementService.create(sm);
-		logger.info("StockMovement " + stockMovement + " was created due to resizing");
+		logger.writeLog("StockMovement " + stockMovement + " was created due to resizing");
 
 	}
 
