@@ -16,6 +16,7 @@ satisfy orders and stock movements and send e-mails when a order is completed
 * Clean Architecture
 * SOLID (I skip the letter S)
 * RabbitMQ
+* Prometheus
 
 ### How to run
 
@@ -23,3 +24,4 @@ satisfy orders and stock movements and send e-mails when a order is completed
 * Run on terminal docker-compose up
 * API is available on http://localhost:8080/swagger-ui/index.html
 * Emails can be checked on http://localhost:8025/
+* Prometheus is available on http://localhost:9090/

@@ -3,6 +3,8 @@ version: "3.3"
 networks:
   backend:
     driver: bridge
+volumes:
+  prometheus_data:
 
 services:
   order-manager:
@@ -25,10 +27,12 @@ services:
       - db
       - mailhog
       - rabbitmq
+      - prometheus
     networks:
       - backend
   db:
     image: postgres:16
+    container_name: postgres-database
     ports:
       - 5432:5432
     volumes:
@@ -41,7 +45,7 @@ services:
       - backend
   mailhog:
     image: mailhog/mailhog
-    container_name: 'mailhog'
+    container_name: mailhog
     ports:
       - "1025:1025"
       - "8025:8025"
@@ -56,3 +60,13 @@ services:
       - "5672:5672"
     networks:
       - backend
+  prometheus:
+    image: prom/prometheus:v2.51.1
+    container_name: prometheus
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    networks:
+      - backend
+    ports:
+      - "9090:9090"
