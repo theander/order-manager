@@ -11,7 +11,7 @@ satisfy orders and stock movements and send e-mails when a order is completed
 * Docker, Docker Compose
 * Postgres
 * OpenApi(Swagger)
-* Log4j
+* Log4j, Lo
 * Mapstruts
 * Clean Architecture
 * SOLID (I skip the letter S)

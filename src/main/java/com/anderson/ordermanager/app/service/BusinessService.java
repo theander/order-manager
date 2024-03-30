@@ -97,7 +97,7 @@ public class BusinessService {
 		sm.setItem(i);
 		sm.setQuantity(diff);
 		StockMovement stockMovement = stockMovementService.create(sm);
-		logger.writeLog("StockMovement " + stockMovement + " was created due to resizing");
+		logger.writeLog("StockMovement ID: " + stockMovement.getId() + " was created due to resizing");
 
 	}
 
