@@ -8,7 +8,7 @@ satisfy orders and stock movements and send e-mails when a order is completed
 * Java 17;
 * Springboot;
 * Hibernate, Spring JPA;
-* Docker
+* Docker, Docker Compose
 * Postgres
 * OpenApi(Swagger)
 * Log4j
@@ -16,7 +16,7 @@ satisfy orders and stock movements and send e-mails when a order is completed
 * Clean Architecture
 * SOLID (I skip the letter S)
 * RabbitMQ
-* Prometheus
+* Prometheus, Grafana
 
 ### How to run
 
@@ -25,3 +25,5 @@ satisfy orders and stock movements and send e-mails when a order is completed
 * API is available on http://localhost:8080/swagger-ui/index.html
 * Emails can be checked on http://localhost:8025/
 * Prometheus is available on http://localhost:9090/
+* Grafana is available on http://localhost:3000/ | username: admin, password: admin
+    * http://localhost:3000/d/spring_boot_21/spring-boot-2-1-system-monitor?orgId=1&refresh=5s
