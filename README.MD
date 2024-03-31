@@ -27,3 +27,45 @@ satisfy orders and stock movements and send e-mails when a order is completed
 * Prometheus is available on http://localhost:9090/
 * Grafana is available on http://localhost:3000/ | username: admin, password: admin
     * http://localhost:3000/d/spring_boot_21/spring-boot-2-1-system-monitor?orgId=1&refresh=5s
+
+# Architecture
+
+![img_1.png](img_1.png)
+
+# Class Diagram
+
+```mermaid
+---
+title: Class diagram
+---
+classDiagram
+    class Item {
+        + Long id
+        + String name
+    }
+    class StockMovement {
+        + Long id
+        + LocalDateTime creationDate
+        + int quantity
+        + Item item
+    }
+    class Order {
+        + Long id
+        + LocalDateTime creationDate
+        + int quantity
+        + boolean completed
+        + User user
+        + Item item
+    }
+    class User {
+        + Long id
+        + String name
+        + String email
+    }
+
+    Item "1" *-- "0..*" StockMovement: has
+    Order "1" *-- "0..1" User: has
+    Order "1" *-- "0..1" Item: has
+
+```
+
