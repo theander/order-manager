@@ -17,6 +17,7 @@ satisfy orders and stock movements and send e-mails when a order is completed
 * SOLID (I skip the letter S)
 * RabbitMQ
 * Prometheus, Grafana
+* JUnit, Mockito
 
 ### How to run
 
