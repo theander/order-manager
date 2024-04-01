@@ -1,14 +1,14 @@
 package com.anderson.ordermanager.infra.web.controller;
 
+import com.anderson.ordermanager.app.entity.StatusEnum;
+import com.anderson.ordermanager.app.entity.StockMovement;
+import com.anderson.ordermanager.app.service.BusinessService;
+import com.anderson.ordermanager.app.service.StockMovementService;
 import com.anderson.ordermanager.infra.mapper.StockMovementMapper;
 import com.anderson.ordermanager.infra.web.dto.SortEnum;
 import com.anderson.ordermanager.infra.web.dto.StockMovementDto;
 import com.anderson.ordermanager.infra.web.pagination.Pagination;
 import com.anderson.ordermanager.infra.web.pagination.PaginationResponse;
-import com.anderson.ordermanager.app.entity.StockMovement;
-import com.anderson.ordermanager.app.entity.StatusEnum;
-import com.anderson.ordermanager.app.service.BusinessService;
-import com.anderson.ordermanager.app.service.StockMovementService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -20,13 +20,11 @@ import org.springframework.web.bind.annotation.*;
 public class StockMovementController {
 	private final StockMovementService stockMovementService;
 	private final BusinessService businessService;
-	private final Pagination pagination;
 	private final StockMovementMapper mapper;
 
-	public StockMovementController(StockMovementService stockMovementService, BusinessService businessService, Pagination pagination, StockMovementMapper mapper) {
+	public StockMovementController(StockMovementService stockMovementService, BusinessService businessService, StockMovementMapper mapper) {
 		this.stockMovementService = stockMovementService;
 		this.businessService = businessService;
-		this.pagination = pagination;
 		this.mapper = mapper;
 	}
 
@@ -49,6 +47,7 @@ public class StockMovementController {
 			@RequestParam(defaultValue = "10") int size,
 			@RequestParam(defaultValue = "status", required = false) String sortBy,
 			@RequestParam(defaultValue = "ASC", required = false) SortEnum sortDirection) {
+		Pagination pagination = new Pagination();
 		Pageable pageable = pagination.createPageable(page, size, sortBy, sortDirection.getValue());
 		Page<StockMovement> itemsPage = statusFilter != null ? stockMovementService.findStockMovementByStatus(statusFilter, pageable) : stockMovementService.findAll(pageable);
 		Pagination pagination1 = pagination.createPagination(page, size, sortBy, sortDirection, itemsPage);

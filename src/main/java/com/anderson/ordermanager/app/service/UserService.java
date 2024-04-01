@@ -23,7 +23,7 @@ public class UserService {
 	public void update(Long id, Users users) {
 		Users user = findById(id);
 		users.setId(user.getId());
-		userGateway.save(user);
+		userGateway.update(users);
 
 	}
 

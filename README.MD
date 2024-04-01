@@ -34,38 +34,4 @@ satisfy orders and stock movements and send e-mails when a order is completed
 
 # Class Diagram
 
-```mermaid
----
-title: Class diagram
----
-classDiagram
-    class Item {
-        + Long id
-        + String name
-    }
-    class StockMovement {
-        + Long id
-        + LocalDateTime creationDate
-        + int quantity
-        + Item item
-    }
-    class Order {
-        + Long id
-        + LocalDateTime creationDate
-        + int quantity
-        + boolean completed
-        + User user
-        + Item item
-    }
-    class User {
-        + Long id
-        + String name
-        + String email
-    }
-
-    Item "1" *-- "0..*" StockMovement: has
-    Order "1" *-- "0..1" User: has
-    Order "1" *-- "0..1" Item: has
-
-```
-
+![img.png](img.png)

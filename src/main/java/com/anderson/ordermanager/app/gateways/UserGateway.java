@@ -12,4 +12,6 @@ public interface UserGateway {
 	void deleteById(Long id);
 
 	Page<Users> findAll(Pageable pageable);
+
+	void update(Users user);
 }

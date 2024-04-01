@@ -49,4 +49,13 @@ public class UsersRepositoryService implements UserGateway {
 		Page<UsersEntity> list = usersRepository.findAll(pageable);
 		return list.map(mapper::toDomain);
 	}
+
+	@Override
+	public void update(Users user) {
+		try {
+			usersRepository.save(mapper.toEntity(user));
+		} catch (DataIntegrityViolationException e) {
+			throw new UniqueConstraintViolationException("Conflict!!!. User Already exists.");
+		}
+	}
 }
